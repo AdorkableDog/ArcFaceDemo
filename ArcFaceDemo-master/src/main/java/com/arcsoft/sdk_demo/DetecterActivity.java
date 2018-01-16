@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -355,6 +356,7 @@ public class DetecterActivity extends Activity implements OnCameraListener, View
 		if (currentVolume == 0) {
 			audioManager.setStreamMute(AudioManager.STREAM_SYSTEM, true);
 		}
+		setWindowBrightness(255);
 
 		setContentView(R.layout.activity_camera);
 		mGLSurfaceView = (CameraGLSurfaceView) findViewById(R.id.glsurfaceView);
@@ -533,7 +535,7 @@ public class DetecterActivity extends Activity implements OnCameraListener, View
 
 	@Override
 	public void onAfterRender(CameraFrameData data) {
-		mGLSurfaceView.getGLES2Render().draw_rect((Rect[]) data.getParams(), Color.TRANSPARENT, -1);
+//		mGLSurfaceView.getGLES2Render().draw_rect((Rect[]) data.getParams(), Color.TRANSPARENT, -1);
 	}
 
 	@Override
@@ -547,5 +549,17 @@ public class DetecterActivity extends Activity implements OnCameraListener, View
 		if (success) {
 			Log.d(TAG, "Camera Focus SUCCESS!");
 		}
+	}
+
+	/**
+	 * 设置屏幕的亮度值
+	 *
+	 * @param brightness
+	 */
+	private void setWindowBrightness(int brightness) {
+		Window window = getWindow();
+		WindowManager.LayoutParams lp = window.getAttributes();
+		lp.screenBrightness = brightness / 255.0f;
+		window.setAttributes(lp);
 	}
 }
